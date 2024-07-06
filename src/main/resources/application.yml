@@ -1,0 +1,55 @@
+spring:
+    application:
+        name: mobilelele
+    datasource:
+        driverClassName: com.mysql.cj.jdbc.Driver
+        url: jdbc:mysql://localhost:3306/mobilelele?createDatabaseIfNotExist=true
+        username: ${MYSQL_USER:root}
+        password: ${MYSQL_PASS:582467}
+    sql:
+      init:
+          mode: never
+
+    mvc:
+        hiddenmethod:
+            filter:
+                enabled: true
+
+    jpa:
+        defer-datasource-initialization: true
+        hibernate:
+            ddl-auto: update
+        open-in-view: false
+        properties:
+            hibernate:
+                dialect: org.hibernate.dialect.MySQLDialect
+                format_sql: true
+
+logging:
+    level:
+        org.hibernate.SQL: DEBUG
+        org.hibernate.orm.jdbc.bind: TRACE
+
+mobilele:
+    default.admin.pass: ${DEFAULT_ADMIN_PASS}
+    default.remember.me.key: ${DEFAULT_REMEMBER_ME_KEY}
+
+mail:
+    mobilele: mobilele@example.com
+    host: localhost
+    port: 1025
+    username: ${MAIL_USER:softuni}
+    password: ${MAIL_PASSWORD:softuni}
+
+open.exchange.rates:
+    schema: https
+    host: openexchangerates.org
+    path: /api/latest.json
+    app_id: ${APP_ID:test}
+    symbols: EUR,BGN
+    enabled: false
+
+
+#        https://openexchangerates:
+#            org/api/latest:
+#                json?app_id=fd1ebb20a97442d0aa22e960f25441a5&symbols=EUR,BGN:
