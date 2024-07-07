@@ -14,7 +14,10 @@ public record OfferSummaryDTO(
         String image,
         BigDecimal price,
         EngineEnum engine,
-        TransmissionEnum transmission
+        TransmissionEnum transmission,
+        String seller,
+        boolean viewerIsOwner,
+        String created
 ) {
     public String summary() {
         return brand + " " + model + ", " + year;
