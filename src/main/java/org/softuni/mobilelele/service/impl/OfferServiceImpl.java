@@ -7,6 +7,7 @@ import org.softuni.mobilelele.model.entity.Model;
 import org.softuni.mobilelele.model.entity.Offer;
 import org.softuni.mobilelele.repository.ModelRepository;
 import org.softuni.mobilelele.repository.OfferRepository;
+import org.softuni.mobilelele.service.MonitoringService;
 import org.softuni.mobilelele.service.OfferService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,10 +22,12 @@ public class OfferServiceImpl implements OfferService {
 
     private final OfferRepository offerRepository;
     private final ModelRepository modelRepository;
+    private final MonitoringService monitoringService;
 
-    public OfferServiceImpl(OfferRepository offerRepository, ModelRepository modelRepository) {
+    public OfferServiceImpl(OfferRepository offerRepository, ModelRepository modelRepository, MonitoringService monitoringService) {
         this.offerRepository = offerRepository;
         this.modelRepository = modelRepository;
+        this.monitoringService = monitoringService;
     }
 
     @Override
@@ -44,6 +47,9 @@ public class OfferServiceImpl implements OfferService {
 
     @Override
     public Page<OfferSummaryDTO> getAllOffers(Pageable pageable) {
+
+        this.monitoringService.logOfferSearch();
+
         return this.offerRepository
                 .findAll(pageable)
                 .map(OfferServiceImpl::mapAsSummary);

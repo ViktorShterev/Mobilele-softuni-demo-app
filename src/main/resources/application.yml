@@ -49,7 +49,15 @@ open.exchange.rates:
     symbols: EUR,BGN
     enabled: false
 
-
 #        https://openexchangerates:
 #            org/api/latest:
 #                json?app_id=fd1ebb20a97442d0aa22e960f25441a5&symbols=EUR,BGN:
+
+management:
+    server:
+        port: 8081
+    endpoints:
+        web:
+            base-path: /actuator
+            exposure:
+                include: "*"
