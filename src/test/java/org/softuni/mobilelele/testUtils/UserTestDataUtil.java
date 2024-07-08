@@ -29,7 +29,7 @@ public class UserTestDataUtil {
 
     public User createUser(List<RolesEnum> roles) {
 
-        List<UserRole> allRoles = this.userRoleRepository.findAllByRoleIn(roles);
+        List<UserRole> allRoles = this.userRoleRepository.findAllByNameIn(roles);
 
         User user = new User()
                 .setIsActive(true)

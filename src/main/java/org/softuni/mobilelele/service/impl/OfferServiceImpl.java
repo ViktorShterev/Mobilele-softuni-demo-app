@@ -13,6 +13,7 @@ import org.softuni.mobilelele.repository.OfferRepository;
 import org.softuni.mobilelele.repository.UserRepository;
 import org.softuni.mobilelele.service.MonitoringService;
 import org.softuni.mobilelele.service.OfferService;
+import org.softuni.mobilelele.service.aop.WarnIfExecutionExceeds;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -57,16 +58,16 @@ public class OfferServiceImpl implements OfferService {
         return offer.getUuid();
     }
 
+    @WarnIfExecutionExceeds(timeInMillis = 1000L)
     @Override
     public Page<OfferSummaryDTO> getAllOffers(Pageable pageable, UserDetails viewer) {
-
-        this.monitoringService.logOfferSearch();
 
         return this.offerRepository
                 .findAll(pageable)
                 .map(offer -> this.mapAsSummary(offer, viewer));
     }
 
+    @WarnIfExecutionExceeds(timeInMillis = 500L)
     @Override
     public Optional<OfferSummaryDTO> getOfferDetail(UUID id, UserDetails viewer) {
         return this.offerRepository
