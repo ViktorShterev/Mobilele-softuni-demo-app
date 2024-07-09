@@ -49,6 +49,10 @@ open.exchange.rates:
     symbols: EUR,BGN
     enabled: false
 
+google.recaptcha:
+    key: ${RECAPTCHA_SITE_KEY:test}
+    secret: ${RECAPTCHA_SITE_SECRET:test}
+
 #        https://openexchangerates:
 #            org/api/latest:
 #                json?app_id=fd1ebb20a97442d0aa22e960f25441a5&symbols=EUR,BGN:

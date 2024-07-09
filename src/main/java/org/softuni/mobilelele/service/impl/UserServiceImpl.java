@@ -29,11 +29,11 @@ public class UserServiceImpl implements UserService {
 
         this.userRepository.save(map(userRegistrationDTO));
 
-        this.applicationEventPublisher
-                .publishEvent(new UserRegisteredEvent(
-                        "UserService",
-                        userRegistrationDTO.email(),
-                        userRegistrationDTO.fullName()));
+//        this.applicationEventPublisher
+//                .publishEvent(new UserRegisteredEvent(
+//                        "UserService",
+//                        userRegistrationDTO.email(),
+//                        userRegistrationDTO.fullName()));
     }
 
     private User map(UserRegistrationDTO userRegistrationDTO) {
