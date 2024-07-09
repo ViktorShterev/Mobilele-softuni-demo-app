@@ -15,8 +15,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -41,15 +40,15 @@ class UserRegisterControllerTestIT {
 
     @BeforeEach
     void setUp() {
-        this.greenMail = new GreenMail(new ServerSetup(this.port, this.host, "smtp"));
+        greenMail = new GreenMail(new ServerSetup(this.port, this.host, "smtp"));
 
-        this.greenMail.start();
-        this.greenMail.setUser(this.username, this.password);
+        greenMail.start();
+        greenMail.setUser(this.username, this.password);
     }
 
     @AfterEach
     void tearDown() {
-        this.greenMail.stop();
+        greenMail.stop();
     }
 
     @Test
@@ -57,18 +56,18 @@ class UserRegisterControllerTestIT {
 
         mvc.perform(
                 MockMvcRequestBuilders.post("/users/register")
+                        .param("email", "test@example.com")
                         .param("firstName", "Petar")
                         .param("lastName", "Petrov")
-                        .param("email", "test@example.com")
                         .param("password", "topsecret")
                         .param("confirmPassword", "topsecret")
                         .with(csrf())
 
         ).andExpect(status().is3xxRedirection())
-                .andExpect(view().name("redirect:/"));
+                .andExpect(redirectedUrlPattern("**/users/login"));
 
-        this.greenMail.waitForIncomingEmail(1);
-        MimeMessage[] receivedMessages = this.greenMail.getReceivedMessages();
+        greenMail.waitForIncomingEmail(1);
+        MimeMessage[] receivedMessages = greenMail.getReceivedMessages();
 
         assertEquals(1, receivedMessages.length);
 
@@ -76,7 +75,7 @@ class UserRegisterControllerTestIT {
 
         assertTrue(registrationMessage.getContent().toString().contains("Petar"));
         assertEquals(1, registrationMessage.getAllRecipients().length);
-        assertEquals("test@example.com", registrationMessage.getAllRecipients()[2].toString());
+        assertEquals("test@example.com", registrationMessage.getAllRecipients()[0].toString());
     }
 
 }

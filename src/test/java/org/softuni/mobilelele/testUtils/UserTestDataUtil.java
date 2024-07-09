@@ -8,6 +8,7 @@ import org.softuni.mobilelele.repository.UserRoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Component
@@ -19,26 +20,30 @@ public class UserTestDataUtil {
     @Autowired
     private UserRoleRepository userRoleRepository;
 
-    public User createTestUser() {
-        return createUser(List.of(RolesEnum.USER));
+    public User createTestUser(String email) {
+        return createUser(email, List.of(RolesEnum.USER));
     }
 
-    public User createTestAdmin() {
-        return createUser(List.of(RolesEnum.ADMIN));
+    public User createTestAdmin(String email) {
+        return createUser(email, List.of(RolesEnum.ADMIN, RolesEnum.USER));
     }
 
-    public User createUser(List<RolesEnum> roles) {
+    public User createUser(String email, List<RolesEnum> roles) {
 
         List<UserRole> allRoles = this.userRoleRepository.findAllByNameIn(roles);
 
         User user = new User()
                 .setIsActive(true)
-                .setEmail("test@mail.com")
+                .setEmail(email)
+                .setPassword("topsecret")
+                .setCreated(LocalDateTime.now())
                 .setFirstName("Test First Name")
                 .setLastName("Test Last Name")
                 .setRoles(allRoles);
 
-        return this.userRepository.save(user);
+        this.userRepository.save(user);
+
+        return user;
     }
 
     public void cleanUp() {

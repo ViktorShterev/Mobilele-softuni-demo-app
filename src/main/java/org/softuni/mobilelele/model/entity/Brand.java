@@ -1,10 +1,9 @@
 package org.softuni.mobilelele.model.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "brands")
@@ -18,6 +17,10 @@ public class Brand extends BaseEntity {
 
     @Column
     private LocalDateTime modified;
+
+    @OneToMany(mappedBy = "brand",
+            cascade = CascadeType.ALL)
+    private List<Model> models;
 
     public LocalDateTime getCreated() {
         return created;
@@ -43,6 +46,15 @@ public class Brand extends BaseEntity {
 
     public Brand setName(String name) {
         this.name = name;
+        return this;
+    }
+
+    public List<Model> getModels() {
+        return models;
+    }
+
+    public Brand setModels(List<Model> models) {
+        this.models = models;
         return this;
     }
 }
