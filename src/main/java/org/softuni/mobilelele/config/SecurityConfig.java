@@ -36,6 +36,7 @@ public class SecurityConfig {
                         .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
 //                        Permit monitoring with actuator on different port (allow actuator endpoints)
                         .requestMatchers(EndpointRequest.toAnyEndpoint()).permitAll()
+                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
 //                        Allow anyone to see the home, login and register form and page
                         .requestMatchers("/", "/users/login", "users/register", "/users/login-error").permitAll()
                         .requestMatchers("/offers/all").permitAll()
