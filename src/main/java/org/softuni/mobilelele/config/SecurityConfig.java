@@ -2,7 +2,9 @@ package org.softuni.mobilelele.config;
 
 import org.softuni.mobilelele.model.enums.RolesEnum;
 import org.softuni.mobilelele.repository.UserRepository;
+import org.softuni.mobilelele.service.UserService;
 import org.softuni.mobilelele.service.impl.MobileleUserDetailsServiceImpl;
+import org.softuni.mobilelele.service.oauth.OAuthSuccessHandler;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.actuate.autoconfigure.security.servlet.EndpointRequest;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
@@ -27,7 +29,8 @@ public class SecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity,
+                                                   OAuthSuccessHandler successHandler) throws Exception {
 
         return httpSecurity.authorizeHttpRequests(
 //                Define which urls are visible to which users
@@ -80,6 +83,10 @@ public class SecurityConfig {
                             .rememberMeCookieName("rememberme");
                 }
 
+        ).oauth2Login(
+                oauth -> {
+                    oauth.successHandler(successHandler);
+                }
         ).build();
     }
 
